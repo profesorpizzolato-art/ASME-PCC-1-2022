@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from datetime import date
 
-# Configuración de página inicial de la plataforma (Debe ser la primera instrucción)
+# Configuración de página inicial de la plataforma
 st.set_page_config(
     page_title="Simulador ASME PCC-1-2022",
     page_icon="🔧",
@@ -46,7 +46,7 @@ def render_module_0():
         )
         if "Seating" in termino:
             st.info("**Definición (2022):** La superficie de la cara de la brida que entra en contacto con la junta para generar el sello.")
-            st.warning("**Evolución:** En 2013 se llamaba *'Contact Surface'*. Se cambió para diferenciarla con precisión de las caras de apoyo de las tuercas.")
+            st.warning("**Evolución:** En 2013 se llamaba *'Contact Surface'*. Se cambió para diferenciarla con precisión de las caras de apoyo de las tuarcas.")
         elif "Target" in termino:
             st.info("**Definición:** El torque requerido en el pase final para lograr la precarga objetivo sin dañar componentes.")
             st.warning("**Evolución:** En 2013 eran recomendaciones. En 2022, si el Owner no provee valores, el cálculo del Apéndice O es obligatorio.")
@@ -261,7 +261,7 @@ def render_module_5():
         problematic = st.checkbox("¿Historial de engrane de roscas (Galling) o problemas?")
         
         if nps > 24 and thickness > 125 or problematic:
-            st.error("🚨 DESARMADO CONTROLADO MANDATORIO (Sec. 14.a): Requiere procedimiento formal de ingeniería (App. J-7).")
+            st.error("🚨 DESARMADO CONTROLADO MANDATORIO (Sec. 14.a): Requierre procedimiento formal de ingeniería (App. J-7).")
 
 # =============================================================================
 # MÓDULO 6: CONTROL DE CALIDAD (QA/QC) Y REGISTROS
@@ -291,6 +291,64 @@ def render_module_6():
             st.json({"Tag": joint_id, "Inspector": inspector, "Tipo_Registro": record_type, "Fecha": str(date.today())})
 
 # =============================================================================
+# MÓDULO 7: MATRIZ DE REFERENCIAS Y NORMAS CRUZADAS (NUEVO)
+# =============================================================================
+def render_module_7():
+    st.title("📚 Module 7: Standards & Reference Matrix")
+    st.caption("Filtro Dinámico de Especificaciones Técnicas Cruzadas (ASME PCC-1-2022 Sec. 15)")
+    
+    st.markdown("""
+    De acuerdo con la **Sección 15 de la norma**, el diseño e integridad de una unión empernada depende de múltiples publicaciones
+    referenciadas de entidades como **API, ASME y ASTM**. A continuación, interactúe con la matriz para auditar materiales y dimensiones.
+    """)
+    
+    cat_norma = st.selectbox(
+        "Seleccione la categoría de consulta normativa (Sec. 15):",
+        ["Materiales de Pernos y Tuercas (ASME BPVC Sec II / ASTM)", "Dimensiones de Bridas y Juntas (ASME B16)", "Prácticas de Inspección y Refrentado (API / ASME PCC-2)"]
+    )
+    
+    if "Materiales" in cat_norma:
+        st.subheader("Especificaciones de Materiales para Alta Presión / Temperatura")
+        mat_sel = st.selectbox(
+            "Seleccione el componente para ver su norma de fabricación obligatoria:",
+            ["Espárragos de Aleación de Acero (High-Temp)", "Tuercas de Acero al Carbono / Aleado", "Forjas de Acero al Carbono (Bridas comunes)"]
+        )
+        if "Espárragos" in mat_sel:
+            st.info("📌 **Norma de Referencia:** **ASME BPVC Section II - SA-193 / SA-193M**")
+            st.write("Aplica a materiales de empernado de aleación y acero inoxidable para servicios de alta presión o temperatura (Ejemplo: Grado B7).")
+        elif "Tuercas" in mat_sel:
+            st.info("📌 **Norma de Referencia:** **ASME BPVC Section II - SA-194 / SA-194M**")
+            st.write("Especificación obligatoria para tuercas aptas para servicios de alta presión y/o alta temperatura (Ejemplo: Grado 2H).")
+        elif "Forjas" in mat_sel:
+            st.info("📌 **Norma de Referencia:** **ASME BPVC Section II - SA-105 / SA-105M**")
+            st.write("Aplica a componentes de tuberías de acero al carbono forjado, incluyendo bridas comunes utilizadas en la industria petrolera.")
+            
+    elif "Dimensiones" in cat_norma:
+        st.subheader("Estándares Dimensionales y Geométricos")
+        dim_sel = st.radio(
+            "Seleccione el rango de Diámetro Nominal (NPS):",
+            ["NPS 1/2 hasta NPS 24", "NPS 26 hasta NPS 60", "Juntas Metálicas / Espiraladas"],
+            horizontal=True
+        )
+        if "NPS 1/2" in dim_sel:
+            st.success("📐 **Estándar Mandatorio:** **ASME B16.5** (Pipe Flanges and Flanged Fittings)")
+            st.write("Regula las dimensiones, tolerancias y clasificaciones de presión (Class 150 a 2500) para diámetros pequeños y medianos.")
+        elif "NPS 26" in dim_sel:
+            st.success("📐 **Estándar Mandatorio:** **ASME B16.47** (Large Diameter Steel Flanges)")
+            st.write("Regula bridas de gran diámetro utilizadas frecuentemente en equipos de refinerías y torres de proceso.")
+        elif "Juntas" in dim_sel:
+            st.success("📐 **Estándar Mandatorio:** **ASME B16.20** (Metallic Gaskets for Pipe Flanges)")
+            st.write("Especifica las dimensiones de juntas espiraladas (Spiral Wound), chaquetas metálicas y anillos RTJ.")
+            
+    elif "Inspección" in cat_norma:
+        st.subheader("Límites de Acabado y Reparaciones Mecánicas")
+        st.markdown("""
+        * **Rugosidad de la Cara (Sec. 15.3):** Conforme a **ASME B46.1** (*Surface Texture*), el acabado de la cara de asiento debe cumplir los límites Ra para garantizar que la junta no experimente cizallamiento ni fuga capilar.
+        * **Mecanizado en Sitio (Sec. 15.3):** Si los defectos evaluados en el *Módulo 2* exceden los límites, el procedimiento de refrentado mecánico en campo se ejecuta bajo **ASME PCC-2, Artículo 305**.
+        * **Instalación de Maquinaria:** Para uniones en equipos rotativos o críticos, se cruzan datos con **API Recommended Practice 686**.
+        """)
+
+# =============================================================================
 # ENRUTADOR CENTRAL (MAIN ROUTING ENGINE)
 # =============================================================================
 def main():
@@ -307,11 +365,11 @@ def main():
             "Module 3: Engineering & Components Data (App. H, L, M, N)",
             "Module 4: Target Torque Engine (Sec. 9-11 / App. J, K, O, Q)",
             "Module 5: Testing & Disassembly (Sec. 12, 14)",
-            "Module 6: Records & Troubleshooting (Sec. 13 / App. P, R)"
+            "Module 6: Records & Troubleshooting (Sec. 13 / App. P, R)",
+            "Module 7: Standards & Reference Matrix (Sec. 15)"  # <-- Nueva pestaña activa
         ]
     )
     
-    # Enrutamiento directo a las funciones locales
     if modulo_seleccionado == "Module 0: Foreword, Glossary & Safety":
         render_module_0()
     elif modulo_seleccionado == "Module 1: Scope & Field Assembly Procedures (Sec. 1-10)":
@@ -326,6 +384,8 @@ def main():
         render_module_5()
     elif modulo_seleccionado == "Module 6: Records & Troubleshooting (Sec. 13 / App. P, R)":
         render_module_6()
+    elif modulo_seleccionado == "Module 7: Standards & Reference Matrix (Sec. 15)":
+        render_module_7()
 
 if __name__ == "__main__":
     main()
