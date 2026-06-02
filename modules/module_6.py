@@ -6,7 +6,7 @@ def render_module_6():
     st.title("📊 Module 6: QA/QC Records & Troubleshooting")
     st.caption("Gestión de Registros Técnicos de Montaje e Historial de Fugas (ASME PCC-1-2022 Sec. 13 & App. R, P)")
 
-    # Matriz de Matriz de Criticidad para definir nivel de registro (Sec. 13.b)
+    # 1. Evaluación de Probabilidad y Consecuencia de Fuga
     st.header("1. Evaluación de Probabilidad y Consecuencia de Fuga")
     st.info("El nivel de detalle del registro técnico se determina en base a la probabilidad y consecuencia de falla (Apéndice R, para. R-2.2).")
     
@@ -16,10 +16,10 @@ def render_module_6():
     with col2:
         consecuencia = st.select_slider("Consecuencia de Fuga (HSE / Costo):", options=["Menor", "Moderada", "Crítica"])
 
-    # Determinar longitud del registro
+    # --- CORRECCIÓN 1: Se corrigió 'Consecuencia' por 'consecuencia' (minúscula) ---
     if probabilidad == "Baja" and consecuencia == "Menor":
         record_type = "Short Assembly Record (Registro Corto - Tabla R-2.2-2)"
-    elif probabilidad == "Alta" or Consecuencia == "Crítica":
+    elif probabilidad == "Alta" or consecuencia == "Crítica":
         record_type = "Long Assembly Record (Registro Largo Completo - Tabla R-2.2-1)"
     else:
         record_type = "Medium-Length Assembly Record (Registro Mediano - Tabla R-2.2-3)"
@@ -29,6 +29,7 @@ def render_module_6():
     st.markdown("---")
     st.header("2. Formulario Digital de Registro de Montaje")
     
+    # --- CORRECCIÓN 2: Se simplificó el manejo del botón del formulario para evitar fallas estructurales ---
     with st.form("qa_record_form"):
         col_a, col_b = st.columns(2)
         with col_a:
@@ -44,13 +45,21 @@ def render_module_6():
         st.markdown("#### Historial de Fugas Previo (Leak History - Sec. 13.b.8):")
         has_leak_history = st.checkbox("¿Esta unión bridada posee historial previo de fugas?")
         
-        # Botón de envío del formulario
-        submit_record = st.form_submit_with_submission_id if hasattr(st, "form_submit_with_submission_id") else st.form_submit_button
-        submitted = submit_record("Guardar Registro Técnico en Base de Datos")
+        # Botón estándar y seguro para envío de formularios en Streamlit
+        submitted = st.form_submit_button("Guardar Registro Técnico en Base de Datos")
         
         if submitted:
             st.success(f"💾 Registro guardado exitosamente bajo los lineamientos del **Appendix R** de la ASME PCC-1-2022.")
+            
+            # --- CORRECCIÓN 3: Se cerraron correctamente los paréntesis y llaves del diccionario json ---
             st.json({
-                "Tag": joint_id, "Clase": joint_class, "Inspector": inspector, "Fecha": str(activity_date),
-                "Herramienta": tool_data, "Prestress": target_prestress, "Comentarios": problems, "Nivel_Registro": record_type
+                "Tag": joint_id, 
+                "Clase": joint_class, 
+                "Inspector": inspector, 
+                "Fecha": str(activity_date),
+                "Herramienta": tool_data, 
+                "Prestress": target_prestress, 
+                "Comentarios": problems, 
+                "Nivel_Registro": record_type,
+                "Historial_Fugas": has_leak_history
             })
