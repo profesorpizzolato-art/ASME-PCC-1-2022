@@ -46,7 +46,7 @@ def render_module_0():
         )
         if "Seating" in termino:
             st.info("**Definición (2022):** La superficie de la cara de la brida que entra en contacto con la junta para generar el sello.")
-            st.warning("**Evolución:** En 2013 se llamaba *'Contact Surface'*. Se cambió para diferenciarla con precisión de las caras de apoyo de las tuarcas.")
+            st.warning("**Evolución:** En 2013 se llamaba *'Contact Surface'*. Se cambió para diferenciarla con precisión de las caras de apoyo de las tuercas.")
         elif "Target" in termino:
             st.info("**Definición:** El torque requerido en el pase final para lograr la precarga objetivo sin dañar componentes.")
             st.warning("**Evolución:** En 2013 eran recomendaciones. En 2022, si el Owner no provee valores, el cálculo del Apéndice O es obligatorio.")
@@ -218,7 +218,7 @@ def render_module_4():
 
     col1, col2 = st.columns(2)
     with col1:
-        tightening_method = st.selectbox("Método de Ajuste:", ["Torque Controlado", "Tensionado Hidráulico", "Medición de Alargamiento"])
+        tightening_method = st.selectbox("Método de Ajuste:", ["Torque Controlled", "Hydraulic Tensioning", "Bolt Elongation Measurement"])
         total_bolts = st.number_input("Cantidad total de pernos:", min_value=4, value=24)
     with col2:
         gasket_type = st.selectbox("Tipo de Junta (Sec. 10.a.2.e):", ["Hard Gasket (RTJ, Metálica)", "Soft Gasket (Grafito, PTFE)"])
@@ -261,7 +261,7 @@ def render_module_5():
         problematic = st.checkbox("¿Historial de engrane de roscas (Galling) o problemas?")
         
         if nps > 24 and thickness > 125 or problematic:
-            st.error("🚨 DESARMADO CONTROLADO MANDATORIO (Sec. 14.a): Requierre procedimiento formal de ingeniería (App. J-7).")
+            st.error("🚨 DESARMADO CONTROLADO MANDATORIO (Sec. 14.a): Requiere procedimiento formal de ingeniería (App. J-7).")
 
 # =============================================================================
 # MÓDULO 6: CONTROL DE CALIDAD (QA/QC) Y REGISTROS
@@ -291,61 +291,115 @@ def render_module_6():
             st.json({"Tag": joint_id, "Inspector": inspector, "Tipo_Registro": record_type, "Fecha": str(date.today())})
 
 # =============================================================================
-# MÓDULO 7: MATRIZ DE REFERENCIAS Y NORMAS CRUZADAS (NUEVO)
+# MÓDULO 7: MATRIZ DE REFERENCIAS Y NORMAS CRUZADAS (SECCIÓN 15 COMPLETA)
 # =============================================================================
 def render_module_7():
     st.title("📚 Module 7: Standards & Reference Matrix")
     st.caption("Filtro Dinámico de Especificaciones Técnicas Cruzadas (ASME PCC-1-2022 Sec. 15)")
     
     st.markdown("""
-    De acuerdo con la **Sección 15 de la norma**, el diseño e integridad de una unión empernada depende de múltiples publicaciones
-    referenciadas de entidades como **API, ASME y ASTM**. A continuación, interactúe con la matriz para auditar materiales y dimensiones.
+    De acuerdo con la **Sección 15 de la norma**, el diseño, cálculo e integridad de una unión empernada depende de múltiples publicaciones
+    referenciadas de entidades globales como **API, ASME, ASTM, ISO, JSA, MSS, PIP, SAE, TEMA, OSHA y VDI**.
     """)
     
     cat_norma = st.selectbox(
         "Seleccione la categoría de consulta normativa (Sec. 15):",
-        ["Materiales de Pernos y Tuercas (ASME BPVC Sec II / ASTM)", "Dimensiones de Bridas y Juntas (ASME B16)", "Prácticas de Inspección y Refrentado (API / ASME PCC-2)"]
+        [
+            "Materiales de Pernos y Tuercas (ASME BPVC Sec II / ASTM / SAE)", 
+            "Dimensiones de Bridas y Juntas (ASME B16 / ISO / MSS)", 
+            "Diseño de Equipos y Prácticas de Inspección (API / TEMA / PIP / VDI / WRC)",
+            "Seguridad de Procesos e Historial de Fugas (OSHA / JSA / Literatura Técnica)"
+        ]
     )
     
     if "Materiales" in cat_norma:
-        st.subheader("Especificaciones de Materiales para Alta Presión / Temperatura")
+        st.subheader("Especificaciones de Materiales y Metalurgia para Alta Presión / Temperatura")
         mat_sel = st.selectbox(
             "Seleccione el componente para ver su norma de fabricación obligatoria:",
-            ["Espárragos de Aleación de Acero (High-Temp)", "Tuercas de Acero al Carbono / Aleado", "Forjas de Acero al Carbono (Bridas comunes)"]
+            [
+                "Espárragos de Aleación de Acero (High-Temp) [ASME SA-193 / SA-193M]", 
+                "Tuercas de Acero al Carbono y Aleado [ASME SA-194 / SA-194M]", 
+                "Forjas de Acero al Carbono para Bridas [ASME SA-105 / SA-105M]",
+                "Arandelas de Acero Cementado / Templado [ASTM F436 / F436M]",
+                "Ensayos Mecánicos y Descarbonización de Elementos de Fijación [ASTM F606 / SAE J419]"
+            ]
         )
-        if "Espárragos" in mat_sel:
-            st.info("📌 **Norma de Referencia:** **ASME BPVC Section II - SA-193 / SA-193M**")
-            st.write("Aplica a materiales de empernado de aleación y acero inoxidable para servicios de alta presión o temperatura (Ejemplo: Grado B7).")
-        elif "Tuercas" in mat_sel:
-            st.info("📌 **Norma de Referencia:** **ASME BPVC Section II - SA-194 / SA-194M**")
-            st.write("Especificación obligatoria para tuercas aptas para servicios de alta presión y/o alta temperatura (Ejemplo: Grado 2H).")
-        elif "Forjas" in mat_sel:
-            st.info("📌 **Norma de Referencia:** **ASME BPVC Section II - SA-105 / SA-105M**")
-            st.write("Aplica a componentes de tuberías de acero al carbono forjado, incluyendo bridas comunes utilizadas en la industria petrolera.")
+        if "SA-193" in mat_sel:
+            st.info("📌 **Referencia:** **ASME BPVC Section II, Part A - SA-193 / SA-193M**")
+            st.write("Aplica a materiales de empernado de acero aleado e inoxidable para recipientes a presión, válvulas, bridas y accesorios para servicios de alta temperatura o alta presión (Ej: Grado B7 o B8).")
+        elif "SA-194" in mat_sel:
+            st.info("📌 **Referencia:** **ASME BPVC Section II, Part A - SA-194 / SA-194M**")
+            st.write("Especificación mandatoria para una amplia variedad de tuercas de acero al carbono, aleado e inoxidable, diseñadas para emparejarse con pernos de alta resistencia mecánica (Ej: Grado 2H).")
+        elif "SA-105" in mat_sel:
+            st.info("📌 **Referencia:** **ASME BPVC Section II, Part A - SA-105 / SA-105M**")
+            st.write("Regula las forjas de acero al carbono para aplicaciones de tuberías, incluyendo bridas comunes, accesorios y componentes de válvulas en sistemas de procesos industriales.")
+        elif "F436" in mat_sel:
+            st.info("📌 **Referencia:** **ASTM F436 / F436M**")
+            st.write("Establece los requisitos mecánicos, químicos y dimensionales para arandelas de acero endurecido (Hardened Steel Washers) en pulgadas y métricas. Crucial según la Sec. 5.5 de PCC-1 para evitar el engrane mecánico de la tuerca contra la brida.")
+        elif "SAE J419" in mat_sel:
+            st.info("📌 **Referencia:** **ASTM F606 / SAE J419**")
+            st.write("Métodos de ensayo estándar para determinar las propiedades mecánicas de elementos de fijación roscados externamente e internamente, arandelas, e indicadores de tensión directa. Incluye la medición de la descarbonización superficial del acero para evitar pérdidas prematuras de resistencia.")
             
     elif "Dimensiones" in cat_norma:
         st.subheader("Estándares Dimensionales y Geométricos")
         dim_sel = st.radio(
-            "Seleccione el rango de Diámetro Nominal (NPS):",
-            ["NPS 1/2 hasta NPS 24", "NPS 26 hasta NPS 60", "Juntas Metálicas / Espiraladas"],
-            horizontal=True
+            "Seleccione el rango de Diámetro o Tipo de Conexión Especial:",
+            ["NPS 1/2 hasta NPS 24 [ASME B16.5]", "NPS 26 hasta NPS 60 [ASME B16.47]", "Juntas Metálicas / Espiraladas [ASME B16.20]", "Bridas Estándar e IX Compactas [ISO 7005-1 / ISO 27509]", "Refrentado de Bridas Bronce/Hierro/Acero [MSS SP-9]"],
+            horizontal=False
         )
-        if "NPS 1/2" in dim_sel:
+        if "B16.5" in dim_sel:
             st.success("📐 **Estándar Mandatorio:** **ASME B16.5** (Pipe Flanges and Flanged Fittings)")
-            st.write("Regula las dimensiones, tolerancias y clasificaciones de presión (Class 150 a 2500) para diámetros pequeños y medianos.")
-        elif "NPS 26" in dim_sel:
+            st.write("Regula las dimensiones, tolerancias materiales y clasificaciones de presión-temperatura (Class 150 a 2500) para bridas industriales de diámetros pequeños y medianos.")
+        elif "B16.47" in dim_sel:
             st.success("📐 **Estándar Mandatorio:** **ASME B16.47** (Large Diameter Steel Flanges)")
-            st.write("Regula bridas de gran diámetro utilizadas frecuentemente en equipos de refinerías y torres de proceso.")
-        elif "Juntas" in dim_sel:
+            st.write("Regula bridas de acero de gran diámetro (NPS 26 a NPS 60), divididas en Series A y Series B, comunes en conexiones principales de equipos de refinación.")
+        elif "B16.20" in dim_sel:
             st.success("📐 **Estándar Mandatorio:** **ASME B16.20** (Metallic Gaskets for Pipe Flanges)")
-            st.write("Especifica las dimensiones de juntas espiraladas (Spiral Wound), chaquetas metálicas y anillos RTJ.")
+            st.write("Especifica las dimensiones y materiales de juntas espiraladas (Spiral Wound), juntas con camisa metálica, y anillos metálicos tipo RTJ (Ring Joint).")
+        elif "ISO" in dim_sel:
+            st.success("📐 **Estándar Internacional:** **ISO 7005-1 & ISO 27509**")
+            st.write("**ISO 7005-1:** Especifica bridas de acero para sistemas de tuberías industriales generales. \n\n**ISO 27509:** Modela conexiones bridadas compactas (Compact Flanged Connections) con anillo de sello tipo IX, ampliamente utilizadas en la industria del petróleo y gas marino/offshore para optimizar peso y resistencia.")
+        elif "MSS" in dim_sel:
+            st.success("📐 **Estándar de Fabricación:** **MSS SP-9** (Spot Facing for Bronze, Iron and Steel Flanges)")
+            st.write("Regula el refrentado o remecanizado plano posterior en las zonas de apoyo de las tuercas/pernos para asegurar el paralelismo absoluto cara-tuerca.")
             
-    elif "Inspección" in cat_norma:
-        st.subheader("Límites de Acabado y Reparaciones Mecánicas")
+    elif "Diseño" in cat_norma:
+        st.subheader("Diseño de Equipos, Intercambiadores y Cálculo de Alta Carga")
+        eq_sel = st.selectbox(
+            "Seleccione el estándar de diseño o boletín de investigación:",
+            [
+                "Diseño de Intercambiadores de Calor de Coraza y Tubos [API 660 / TEMA]",
+                "Especificaciones de Recipientes a Presión [ASME Section VIII Div 1 & 2 / PIP VESV1002]",
+                "Cálculo Sistemático de Uniones Empernadas de Alta Resistencia [VDI 2230 / EN 1591-1]",
+                "Determinación de Carga en Pernos y Tuberías de Bombas [WRC Bulletin 449 / 538]"
+            ]
+        )
+        if "Intercambiadores" in eq_sel:
+            st.info("💻 **Referencia:** **API Standard 660 / Standards of TEMA**")
+            st.write("Normas aplicables al diseño mecánico y térmico de intercambiadores de calor en refinerías. Las uniones bridadas de estos equipos están sometidas a ciclados térmicos severos, requiriendo un control estricto de precarga bajo ASME PCC-1.")
+        elif "Recipientes" in eq_sel:
+            st.info("💻 **Referencia:** **ASME BPVC Sec VIII / PIP VESV1002**")
+            st.write("Establece las reglas de diseño estructural de recipientes sometidos a presión interna o externa. El documento **PIP VESV1002** complementa la fabricación industrial con criterios técnicos de campo norteamericanos.")
+        elif "Sistemático" in eq_sel:
+            st.info("💻 **Referencia:** **VDI 2230 / EN 1591-1**")
+            st.write("**VDI 2230:** Estándar de ingeniería alemán de referencia mundial para el cálculo analítico riguroso de juntas empernadas cilíndricas de alta carga.\n\n**EN 1591-1:** Reglas de diseño y cálculo para uniones de bridas circulares con junta de sellado.")
+        elif "WRC" in eq_sel:
+            st.info("💻 **Referencia:** **WRC Bulletin 449 & WRC Bulletin 538**")
+            st.write("**WRC 449:** Pautas para el diseño e instalación de sistemas de tuberías de bombas rotativas para mitigar tensiones externas.\n\n**WRC 538:** Estudio analítico y experimental del Welding Research Council para determinar de forma exacta las cargas en pernos de juntas de estanqueidad de presión.")
+            
+    elif "Seguridad" in cat_norma:
+        st.subheader("Seguridad de Procesos, Procedimientos Mundiales y Literatura Científica")
+        st.markdown("#### ☣️ Gestión de la Seguridad de Procesos Químicos y Petroleros:")
+        st.error("🔒 **OSHA 29 CFR 1910.119 (Process Safety Management - PSM):** \nExigencia legal federal aplicable a plantas químicas y refinerías que procesan químicos altamente peligrosos. El cumplimiento estricto de los procedimientos de torque de ASME PCC-1 actúa como una barrera de seguridad crítica (*Mechanical Integrity*) para evitar emisiones fugitivas catastróficas.")
+        
+        st.markdown("#### 🇯🇵 Normas de Torque Internacionales:")
+        st.warning("⚙️ **JSA JIS B 2251:** \nEstándar de la Asociación Japonesa de Normalización que regula de forma específica los procedimientos de apriete de pernos para el montaje de uniones bridadas en circuitos con contención de presión.")
+        
+        st.markdown("#### 📚 Literatura Científica Clave (Investigaciones sobre Corrosión y Fugas):")
         st.markdown("""
-        * **Rugosidad de la Cara (Sec. 15.3):** Conforme a **ASME B46.1** (*Surface Texture*), el acabado de la cara de asiento debe cumplir los límites Ra para garantizar que la junta no experimente cizallamiento ni fuga capilar.
-        * **Mecanizado en Sitio (Sec. 15.3):** Si los defectos evaluados en el *Módulo 2* exceden los límites, el procedimiento de refrentado mecánico en campo se ejecuta bajo **ASME PCC-2, Artículo 305**.
-        * **Instalación de Maquinaria:** Para uniones en equipos rotativos o críticos, se cruzan datos con **API Recommended Practice 686**.
+        * **Textos de Consulta de J. H. Bickford [1, 2]:** Considerados 'la biblia' de las uniones empernadas (*An Introduction to the Design and Behavior of Bolted Joints*), describiendo la física detrás de la interacción elástica y el coeficiente de fricción.
+        * **Investigaciones de W. Brown [3, 4]:** Estudios críticos presentados en conferencias de la ASME (PVP) que definen los **factores de pérdida de carga en tensionadores hidráulicos** y los **límites aceptables de corrosión** en bridas operativas.
+        * **Estudios de Kikuchi & Sawa [5, 6]:** Demostraron analíticamente mediante pruebas mecánicas cómo la **pérdida de espesor en las tuercas debido a la corrosión** provoca una reducción drástica de la carga del perno bajo presión interna y momentos de flexión externos.
         """)
 
 # =============================================================================
@@ -366,7 +420,7 @@ def main():
             "Module 4: Target Torque Engine (Sec. 9-11 / App. J, K, O, Q)",
             "Module 5: Testing & Disassembly (Sec. 12, 14)",
             "Module 6: Records & Troubleshooting (Sec. 13 / App. P, R)",
-            "Module 7: Standards & Reference Matrix (Sec. 15)"  # <-- Nueva pestaña activa
+            "Module 7: Standards & Reference Matrix (Sec. 15)"
         ]
     )
     
@@ -374,18 +428,5 @@ def main():
         render_module_0()
     elif modulo_seleccionado == "Module 1: Scope & Field Assembly Procedures (Sec. 1-10)":
         render_module_1()
-    elif modulo_seleccionado == "Module 2: Pre-Assembly Inspection (Sec. 4-6 / App. C-E)":
-        render_module_2()
-    elif modulo_seleccionado == "Module 3: Engineering & Components Data (App. H, L, M, N)":
-        render_module_3()
-    elif modulo_seleccionado == "Module 4: Target Torque Engine (Sec. 9-11 / App. J, K, O, Q)":
-        render_module_4()
-    elif modulo_seleccionado == "Module 5: Testing & Disassembly (Sec. 12, 14)":
-        render_module_5()
-    elif modulo_seleccionado == "Module 6: Records & Troubleshooting (Sec. 13 / App. P, R)":
-        render_module_6()
-    elif modulo_seleccionado == "Module 7: Standards & Reference Matrix (Sec. 15)":
-        render_module_7()
-
-if __name__ == "__main__":
-    main()
+    elif modulo_seleccionado == "Module 2: Pre-Assembly Inspection (Sec. 4-6 / App. C-E)
+    
