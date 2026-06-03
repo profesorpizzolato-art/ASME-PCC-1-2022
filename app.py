@@ -428,5 +428,5 @@ def main():
         render_module_0()
     elif modulo_seleccionado == "Module 1: Scope & Field Assembly Procedures (Sec. 1-10)":
         render_module_1()
-    elif modulo_seleccionado == "Module 2: Pre-Assembly Inspection (Sec. 4-6 / App. C-E)
-    
+    elif modulo_seleccionado == "Module 2: Pre-Assembly Inspection (Sec. 4-6 / App. C-E)":
+    render_module_2()
