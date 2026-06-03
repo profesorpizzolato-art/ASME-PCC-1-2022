@@ -1,8 +1,10 @@
-[Simulador PCC-1]
- │
- ├── Módulo 1: Gestión de Competencias (Secciones 1, 2, 3 y Apéndice A)
- ├── Módulo 2: Inspección y Tolerancias (Secciones 4, 5, 6 y Apéndices C, D, E)
- ├── Módulo 3: Ingeniería de Materiales (Secciones 7, 8, 15 y Apéndices H, L, M, N)
- ├── Módulo 4: Motor de Cálculo de Torque (Secciones 9, 10, 11 y Apéndices J, K, O, Q)
- ├── Módulo 5: Operaciones y Ensayos (Secciones 12, 14 y Apéndice G)
- └── Módulo 6: Registro Técnico y Diagnóstico (Sección 13 y Apéndices P, R)
+├── app.py                     <-- Este archivo enrutador central
+└── modules/                   <-- Tu carpeta de submódulos
+    ├── __init__.py            <-- Archivo vacío (obligatorio)
+    ├── module_0.py
+    ├── module_1.py
+    ├── module_2.py
+    ├── module_3.py
+    ├── module_4.py
+    ├── module_5.py
+    └── module_6.py
