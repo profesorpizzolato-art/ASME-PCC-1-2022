@@ -187,5 +187,13 @@ def render_module_3():
     key = (nps_sel, class_sel)
     data = db_bridas.get(key, {"pernos": 16, "diam": "1", "area": 0.551})
     num_bolts = data["pernos"]
+    key = (nps_sel, class_sel)
+    data = db_bridas.get(key, {"pernos": 16, "diam": "1", "area": 0.551})
+    num_bolts = data["pernos"]
 
-    st.metric("Cantidad
+    # ESTA ES LA LÍNEA 191 (Debe ir todo corrido sin saltos de línea internos)
+    st.metric("Cantidad de Pernos Detectados automáticamente por Norma:", f"{num_bolts} Pernos")
+
+    # Gráfico del Círculo de Pernos y secuencia de torque
+    def get_sequence(n):
+
