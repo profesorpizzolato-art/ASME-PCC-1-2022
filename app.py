@@ -5,16 +5,21 @@
 # =============================================================================
 import streamlit as st
 from datetime import date
+import sys
+import os
 
-# Importación de los módulos independientes del repositorio
+# Fuerza a Python a buscar e indexar las subcarpetas del directorio actual
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
+# Importación de los módulos referenciando la subcarpeta /modules
 try:
-    from module_0 import render_module_0
-    from module_1 import render_module_1
-    from module_2 import render_module_2
-    from module_3 import render_module_3
-    from module_4 import render_module_4
-    from module_5 import render_module_5
-    from module_6 import render_module_6
+    from modules.module_0 import render_module_0
+    from modules.module_1 import render_module_1
+    from modules.module_2 import render_module_2
+    from modules.module_3 import render_module_3
+    from modules.module_4 import render_module_4
+    from modules.module_5 import render_module_5
+    from modules.module_6 import render_module_6
 except ImportError as e:
     st.error(f"⚠️ Error de Infraestructura: No se pudo cargar un módulo. Detalle: {e}")
     st.stop()
