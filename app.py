@@ -1,7 +1,7 @@
 # =============================================================================
 # SIMULADOR COMPLETO ASME PCC-1-2022 - ENRUTADOR CENTRAL
 # Autoría y Propiedad de la Documentación: Fabricio Pizzolato
-# Institución: IPCL MENFA - UTN
+# Institución: IPCL MENFA 
 # =============================================================================
 import streamlit as st
 from datetime import date
