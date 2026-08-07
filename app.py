@@ -1,7 +1,6 @@
 # =============================================================================
 # SIMULADOR COMPLETO ASME PCC-1-2022 - ENRUTADOR CENTRAL
-# Autoría y Propiedad de la Documentación: Fabricio Pizzolato
-# Institución: IPCL MENFA 
+# Autoría y Propiedad de la Documentación: Fabricio Pizzolato 
 # =============================================================================
 import streamlit as st
 from datetime import date
@@ -38,7 +37,7 @@ def main():
     # -------------------------------------------------------------------------
     st.sidebar.image("https://img.icons8.com/fluency/96/worker-with-road-cone.png", width=80)
     st.sidebar.title("Simulador ASME PCC-1")
-    st.sidebar.markdown(f"**Autor:** Fabricio Pizzolato\n\n**IPCL MENFA - UTN**")
+    st.sidebar.markdown(f"**Autor:** Fabricio Pizzolato**")
     st.sidebar.markdown("---")
     
     # Menú de selección radial vinculado a la estructura modular del proyecto
