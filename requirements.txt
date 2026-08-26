@@ -1,3 +1,15 @@
 streamlit
 matplotlib
 numpy
+# Dependencias Principales del Simulador MENFA (ASME PCC-1-2022)
+streamlit>=1.30.0
+matplotlib>=3.8.0
+numpy>=1.26.0
+pandas>=2.1.0
+
+# Generación de Reportes e Informes Técnicos (Apéndice R / PDF)
+reportlab>=4.0.0
+
+# Herramientas de Cálculo y Utilidades Adicionales
+scipy>=1.11.0
+openpyxl>=3.1.2
