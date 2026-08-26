@@ -1,11 +1,20 @@
 # =============================================================================
 # SIMULADOR COMPLETO ASME PCC-1-2022 - ENRUTADOR CENTRAL
 # Autoría y Propiedad de la Documentación: Fabricio Pizzolato 
+# Institución: IPCL MENFA - UTN
 # =============================================================================
 import streamlit as st
 from datetime import date
 import sys
 import os
+
+# Configuración global y estética de la plataforma Streamlit (Debe ser la primera instrucción)
+st.set_page_config(
+    page_title="Simulador ASME PCC-1-2022",
+    page_icon="🔧",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
 
 # Fuerza a Python a buscar e indexar las subcarpetas del directorio actual
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
@@ -23,21 +32,31 @@ except ImportError as e:
     st.error(f"⚠️ Error de Infraestructura: No se pudo cargar un módulo. Detalle: {e}")
     st.stop()
 
-# Configuración global y estética de la plataforma Streamlit
-st.set_page_config(
-    page_title="Simulador ASME PCC-1-2022",
-    page_icon="🔧",
-    layout="wide",
-    initial_sidebar_state="expanded"
-)
 
 def main():
+    # Inicialización de estado de sesión para el rol de usuario
+    if "user_role" not in st.session_state:
+        st.session_state["user_role"] = "Operador"
+
     # -------------------------------------------------------------------------
-    # PANEL LATERAL: Identidad Corporativa y Control de Navegación
+    # PANEL LATERAL: Identidad Corporativa, Control de Rol y Navegación
     # -------------------------------------------------------------------------
     st.sidebar.image("https://img.icons8.com/fluency/96/worker-with-road-cone.png", width=80)
     st.sidebar.title("Simulador ASME PCC-1")
     st.sidebar.markdown("**Autor:** Fabricio Pizzolato")
+    st.sidebar.markdown("**Unidad:** IPCL MENFA - UTN")
+    st.sidebar.markdown("---")
+
+    # Selector de Perfil de Usuario (Operador vs Supervisor QA/QC)
+    rol_seleccionado = st.sidebar.selectbox(
+        "Perfil de Usuario Activo:",
+        ["Operador de Campo", "Supervisor QA/QC - Ingeniería"],
+        index=0 if st.session_state["user_role"] == "Operador" else 1
+    )
+    
+    # Sincronización del estado de sesión
+    st.session_state["user_role"] = "Operador" if "Operador" in rol_seleccionado else "Supervisor"
+
     st.sidebar.markdown("---")
     
     # Menú de selección radial vinculado a la estructura modular del proyecto
@@ -56,7 +75,31 @@ def main():
     )
     
     st.sidebar.markdown("---")
+    
+    # Marco Normativo Integrado en la Barra Lateral
+    st.sidebar.subheader("📖 Referencias Normativas")
+    st.sidebar.caption(
+        "• **ASME PCC-1-2022:** Guidelines for Pressure Boundary Bolted Flange Joint Assembly\n"
+        "• **ASME B16.5 / B16.47:** Steel Pipe Flanges & Fittings\n"
+        "• **ASME B16.20:** Metallic Gaskets for Pipe Flanges\n"
+        "• **ASME Sec VIII Div 1 App 2:** Rules for Bolted Flange Connections\n"
+        "• **EN 1591-4:** Qualification of Personnel Competence"
+    )
+
+    st.sidebar.markdown("---")
     st.sidebar.caption(f"Plataforma Educativa v2.5 • {date.today().strftime('%Y')}")
+
+    # -------------------------------------------------------------------------
+    # INDICADOR SUPERIOR DE PERFIL ACTIVO
+    # -------------------------------------------------------------------------
+    col_hdr1, col_hdr2 = st.columns([3, 1])
+    with col_hdr1:
+        st.caption(f"PERFIL ACTIVO: **{rol_seleccionado.upper()}**")
+    with col_hdr2:
+        if st.session_state["user_role"] == "Supervisor":
+            st.warning("🔒 MODO SUPERVISIÓN / INGENIERÍA HABILITADO")
+        else:
+            st.success("👷 MODO OPERACIÓN DE CAMPO HABILITADO")
 
     # -------------------------------------------------------------------------
     # ENRUTAMIENTO LÓGICO: Renderizado Condicional de Módulos
