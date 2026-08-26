@@ -1,7 +1,7 @@
 # =============================================================================
 # MÓDULO 1: PROCEDIMIENTOS DE CAMPO Y REGISTRO DE ASAMBLEA (ASME PCC-1-2022)
 # Autoría y Propiedad de la Documentación: Fabricio Pizzolato
-# Institución: IPCL MENFA - UTN
+# Institución: MENFA- Capacitaciones
 # =============================================================================
 import streamlit as st
 from datetime import date
