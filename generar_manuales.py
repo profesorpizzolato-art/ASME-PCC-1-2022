@@ -26,8 +26,8 @@ def create_styled_doc():
         header = section.header
         hp = header.paragraphs[0]
         hp.alignment = WD_ALIGN_PARAGRAPH.RIGHT
-        hrun = hp.add_run("IPCL MENFA / UTN — Programa de Integridad de Uniones Bridadas ASME PCC-1-2022")
-        hrun.font.name = "Calibri"
+        hrun = hp.add_run("MENFA Capacitaciones Programa de Integridad de Uniones Bridadas basado en ASME PCC-1-2022")
+        hrun.font.name = "Arial"
         hrun.font.size = Pt(8.5)
         hrun.font.color.rgb = RGBColor(128, 128, 128)
         
@@ -46,7 +46,7 @@ def add_custom_title(doc, text):
 def add_custom_heading1(doc, text):
     p = doc.add_paragraph()
     run = p.add_run(text)
-    run.font.name = "Calibri"
+    run.font.name = "Arial"
     run.font.size = Pt(15)
     run.font.bold = True
     run.font.color.rgb = RGBColor(0, 51, 102)
@@ -56,7 +56,7 @@ def add_custom_heading1(doc, text):
 def add_custom_heading2(doc, text):
     p = doc.add_paragraph()
     run = p.add_run(text)
-    run.font.name = "Calibri"
+    run.font.name = "Arial"
     run.font.size = Pt(12.5)
     run.font.bold = True
     run.font.color.rgb = RGBColor(51, 102, 153)
@@ -69,7 +69,7 @@ def add_body_p(doc, text, bold_prefix=""):
     p.paragraph_format.line_spacing = 1.15
     if bold_prefix:
         r_bold = p.add_run(bold_prefix)
-        r_bold.font.name = "Calibri"
+        r_bold.font.name = "Arial"
         r_bold.font.size = Pt(11)
         r_bold.font.bold = True
     run = p.add_run(text)
@@ -90,13 +90,13 @@ def add_callout(doc, text, title=""):
     
     if title:
         rt = p.add_run(title + "\n")
-        rt.font.name = "Calibri"
+        rt.font.name = "Arial"
         rt.font.size = Pt(11)
         rt.font.bold = True
         rt.font.color.rgb = RGBColor(0, 51, 102)
         
     rtxt = p.add_run(text)
-    rtxt.font.name = "Calibri"
+    rtxt.font.name = "Arial"
     rtxt.font.size = Pt(10.5)
 
 # =============================================================================
