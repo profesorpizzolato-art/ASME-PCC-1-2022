@@ -191,12 +191,12 @@ def main():
     if "user_role" not in st.session_state:
         st.session_state["user_role"] = "Operador"
 
-    # -------------------------------------------------------------------------
+# -------------------------------------------------------------------------
     # PANEL LATERAL: Identidad Corporativa, Control de Rol y Navegación
     # -------------------------------------------------------------------------
     # Muestra el logo corporativo MENFA si está disponible en la carpeta local
     if os.path.exists("logo_menfa.png"):
-        st.sidebar.image("logo_menfa.png", use_column_width=True)
+        st.sidebar.image("logo_menfa.png", use_container_width=True)
     else:
         st.sidebar.image("https://img.icons8.com/fluency/96/worker-with-road-cone.png", width=80)
 
