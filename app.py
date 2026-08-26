@@ -133,9 +133,9 @@ def add_callout(doc, text, title=""):
 def build_manual_bytes(manual_num):
     doc = create_styled_doc()
     
-    # Intenta insertar el logo en la portada del manual si existe en el directorio
+    # Inserción correcta de imagen usando add_picture
     if os.path.exists("logo_menfa.png"):
-        doc.add_image("logo_menfa.png", width=Inches(1.8))
+        doc.add_picture("logo_menfa.png", width=Inches(1.8))
     
     if manual_num == 1:
         add_custom_title(doc, "MANUAL 1: MARCO REGULATORIO, SELECCIÓN DE COMPONENTES Y LIMPIEZA")
@@ -147,7 +147,7 @@ def build_manual_bytes(manual_num):
         add_body_p(doc, "ASME B16.47: Extiende la geometría para bridas de gran diámetro (NPS 26 a NPS 60).", "• ")
         add_body_p(doc, "ASME B16.20: Tolerancias dimensionales de juntas espiraladas (SWG), Kammprofile y anillos RTJ.", "• ")
         add_custom_heading1(doc, "3. Limpieza de Caras (Sección 4)")
-        add_body_p(doc, "Queda estrictamente prohibido el uso de cepillos de acero al carbono en bridas de Acero Inoxidable (SS) para evitar la contaminación ferrosa.", "Regla Crítica (Sec. 4.b.2): ")
+        add_body_p(doc, "Queda strictly prohibido el uso de cepillos de acero al carbono en bridas de Acero Inoxidable (SS) para evitar la contaminación ferrosa.", "Regla Crítica (Sec. 4.b.2): ")
 
     elif manual_num == 2:
         add_custom_title(doc, "MANUAL 2: CRITERIOS DE INSPECCIÓN DE CARAS Y EVALUACIÓN DE IMPERFECCIONES")
@@ -185,16 +185,15 @@ def build_manual_bytes(manual_num):
 
 
 # =============================================================================
-# ESTRUCTURA PRINCIPAL DEL ENRUTADOR
+# ESTRUCTURA PRINCIPAL DEL ENRUTADOR CENTRAL
 # =============================================================================
 def main():
     if "user_role" not in st.session_state:
         st.session_state["user_role"] = "Operador"
 
-# -------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
     # PANEL LATERAL: Identidad Corporativa, Control de Rol y Navegación
     # -------------------------------------------------------------------------
-    # Muestra el logo corporativo MENFA si está disponible en la carpeta local
     if os.path.exists("logo_menfa.png"):
         st.sidebar.image("logo_menfa.png", use_container_width=True)
     else:
@@ -241,7 +240,6 @@ def main():
 
     password_input = st.sidebar.text_input("Clave de Instructor", type="password")
 
-    # Corrección: Se compara directamente con CLAVE_INSTRUCTOR
     if password_input == CLAVE_INSTRUCTOR:
         st.sidebar.success("Acceso concedido — Panel Instructor")
         st.sidebar.markdown("**Descarga de Manuales Word (.docx)**")
