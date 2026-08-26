@@ -1,7 +1,7 @@
 # =============================================================================
 # MÓDULO 0: PRÓLOGO, MARCO REGULATORIO Y EVOLUCIÓN NORMATIVA (ASME PCC-1-2022)
 # Autoría y Propiedad de la Documentación: Fabricio Pizzolato
-# Institución: IPCL MENFA - UTN
+# Institución: MENFA- Capacitaciones
 # =============================================================================
 import streamlit as st
 
