@@ -241,7 +241,8 @@ def main():
 
     password_input = st.sidebar.text_input("Clave de Instructor", type="password")
 
-    if password_input == INSTRUCTOR:
+    # Corrección: Se compara directamente con CLAVE_INSTRUCTOR
+    if password_input == CLAVE_INSTRUCTOR:
         st.sidebar.success("Acceso concedido — Panel Instructor")
         st.sidebar.markdown("**Descarga de Manuales Word (.docx)**")
         
