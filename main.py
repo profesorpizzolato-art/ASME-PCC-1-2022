@@ -1,7 +1,7 @@
 # =============================================================================
 # MAIN APP: SIMULADOR DE TORQUE Y BRIDAS (ASME PCC-1-2022)
 # Autoría y Propiedad de la Documentación: Fabricio Pizzolato
-# Institución: IPCL MENFA - UTN
+# Institución: MENFA- Capacitaciones
 # =============================================================================
 import streamlit as st
 
